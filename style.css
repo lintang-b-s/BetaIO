@@ -1,0 +1,129 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@200;500;800&display=swap");
+
+body {
+    font-family: 'Inter';
+    position: relative;
+    /* background: linear-gradient(180deg, #7236A0 7.87%, #40ADEB 92.01%); */
+    background-image: url(assets/starts.svg);
+    background-image: url(assets/starts.svg), linear-gradient(180deg, #7236A0 7.87%, #40ADEB 92.01%);
+}
+header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 40px;
+  padding-bottom: 2em;
+  flex-flow: row wrap;
+  justify-content: space-around;
+}
+
+.text1{
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 80px;
+  line-height: 135.02%;
+  color: #FFFFFF;
+  text-shadow: 0px 0px 38px #FFFFFF;
+  text-decoration: none;
+
+}
+
+.text2{
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 50px;
+  line-height: 50%;
+  color: #FFFFFF;
+  text-shadow: 0px 0px 38px #FFFFFF;
+  text-decoration: none;
+}
+
+nav{
+  background-color: #3A1E51;
+  font-family: Inter;
+  font-weight: 500;
+  height: 100px;
+  align-items: center;
+  padding-top: 15px;
+  padding-left: 40px;
+  padding-right: 40px;
+  z-index: 10;
+  position: sticky;
+}
+
+li{
+  list-style: none;
+  text-decoration: none;
+}
+
+.sticky {
+  position:sticky;
+  position: sticky; 
+  top: 0px;
+}
+
+a{
+  color: white;
+  text-decoration: none;
+}
+
+main{
+  padding-top: 5em;
+}
+
+.title{
+  font-family: Inter;
+  color: white;
+  text-align: center;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 45px;
+  line-height: 135.02%;
+}
+
+.about{
+  font-family: Inter;
+  color: white;
+  font-size: 18px;
+
+
+  margin-top: 2em;
+  margin-left: 18em;
+  margin-right: 18em;
+  justify-content: center;
+
+  padding: 3em;
+  background: rgba(217, 217, 217, 0.13);
+  border: 1px solid #FFFFFF;
+  box-shadow: -33px 37px 28px 3px rgba(0, 0, 0, 0.13);
+  backdrop-filter: blur(9.5px);
+  /* Note: backdrop-filter has minimal browser support */
+
+  border-radius: 30px;
+}
+
+p{
+  text-align: justify;
+} 
+
+.maps{
+  padding: auto;
+  justify-content: center;
+  padding-top: 8em;
+}
+
+.mapstitle{
+  padding: auto;
+  justify-content: center;
+  padding-bottom: 3em;
+}
+
+
+.futer{
+  margin-top: 2em;
+  background-color: #3A1E51;
+}
+
+

@@ -1,0 +1,58 @@
+<% layout('layouts/boilerplate') %>
+
+<div>hello World</div>
+
+<div class="card">
+    <div class="card-body mx-4">
+      <div class="container">
+        <p class="my-5 mx-5" style="font-size: 30px;">Thank for your purchase</p>
+        <div class="row">
+          <ul class="list-unstyled">
+            <li class="text-black"><%= order.personalDetail.firstName %> <%= order.personalDetail.lastName %> </li>
+            <li class="text-muted mt-1"><span class="text-black">Invoice</span> <%= order._id %></li>
+            <li class="text-black mt-1"><%= order.date.toGMTString() %></li>
+          </ul>
+          <hr>
+          <div class="col-xl-10">
+            <p><%= order.place.title %> (type: <%= order.orderItems[0].ticketCategories.type %>) <%= order.orderItems[0].ticketCategories.startDate.toLocaleDateString()%>
+                - <%= order.orderItems[0].ticketCategories.endDate.toLocaleDateString()%></p>
+          </div>
+          <div class="col-xl-2">
+            <p class="float-end"> $<%= order.totalPay %>
+            </p>
+          </div>
+          <hr>
+        </div>
+        
+        <div class="row text-black">
+  
+          <div class="col-xl-12">
+            <p class="float-end fw-bold">Total: $<%= order.totalPay %>
+            </p>
+          </div>
+          <hr style="border: 2px solid black;">
+        </div>
+        <div class="text-center" style="margin-top: 90px;">
+       
+        
+        </div>
+
+  
+      </div>
+    </div>
+  </div>
+
+  <form action="/places/<%= order.place._id %>/checkout/<%= order._id %>?_method=PUT" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
+    <label class="form-label" for="image">Upload Bukti Pembayaran (dalam bentuk gambar)</label>
+    <input type="file" name="image" id=""  multiple>
+
+    <div class="mb-3">
+      <button class="btn btn-green">Upload Bukti Pembayaran</button>
+    </div>
+  </form>    
+
+
+<script>
+         const order = <%- JSON.stringify(order) %>
+         
+</script>

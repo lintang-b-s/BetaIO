@@ -1,0 +1,51 @@
+<% layout('layouts/boilerplate') %>
+
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Nama</th>
+        <th scope="col">Email</th>
+        <th scope="col">Nama Tempat</th>
+        <th scope="col">Tanggal Check in - Check out</th>
+        <th scope="col">Tanggal Order</th>
+        <th scope="col">Status</th>
+        <th scope="col">Bukti Pembayaran</th>
+        <th scope="col">Approve Pembayaran</th>
+     
+      </tr>
+    </thead>
+    <tbody>
+      
+      <% order.map((order, i) => { %>
+        <tr>
+        <th scope="row"><%= i %></th>
+        <td><%= order.personalDetail.firstName %> <%= order.personalDetail.lastName %></td>
+        <td><%= order.personalDetail.email %></td>
+        <td><%= order.place.title %> </td>
+        <td><%= order.orderItems[0].ticketCategories.startDate.toISOString().split('T')[0] %> - <%= order.orderItems[0].ticketCategories.endDate.toISOString().split('T')[0] %></td>
+        <td><%= order.date.toISOString().split('T')[0] %></td>
+        <td><%= order.status %></td>
+        <% if( order.image.length != 0 ) {%>
+          <td><%= order.image[0].url %></td>
+        <% } else {%>
+          <td>Pengguna belum mengupload bukti pembayaran</td>
+        <% } %>
+        <td>
+          <form action="/orders/<%= order._id %>/<%= order.place._id %>/approve?_method=PUT" method="POST"  novalidate class="needs-validation" enctype="multipart/form-data">
+         
+            <button type="submit" class="btn btn-success" >Terima Pembayaran</button>
+          </form>
+        </td>
+      </tr>
+      
+    <% }) %>
+    </tbody>
+  </table>
+
+
+<script>
+    const order = <%- JSON.stringify(order) %>
+    const pages = <%- JSON.stringify(pages) %>
+    const total = <%- JSON.stringify(total) %>
+</script>

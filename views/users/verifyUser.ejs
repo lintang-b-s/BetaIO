@@ -1,0 +1,21 @@
+<% layout('layouts/boilerplate')%>
+
+<form  action="/<%= userEmail.email  %>/activate?_method=PUT" method="POST" class="needs-validation" novalidate className='form-login d-flex flex-column mt-4 mt-md-0'>
+    <div class="mb-3">
+        Lihat email anda untuk melihat kode OTP
+        <label class="form-label" for="otp"></label>
+        <input class="form-control" type="text" id="otp" name="otp" required autofocus>
+        <div class="valid-feedback">
+            Looks good!
+        </div>
+    </div>
+
+    <button class="btn btn-success btn-block">Submit OTP</button>
+
+
+
+</form>
+
+<script>
+    const userEmail = {features: <%- JSON.stringify(userEmail) %>}
+</script>

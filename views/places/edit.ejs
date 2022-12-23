@@ -1,0 +1,163 @@
+<% layout('layouts/boilerplate') %> 
+
+<div class="row">
+    <h1 class="text-center">Edit place</h1>
+    <div class="col-6 offset-3">
+        <form action="/places/<%= place._id %>?_method=PUT" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label class="form-label" for="title">Title</label>
+                <input value="<%= place.title %>" class="form-control" type="text" id="title" name="place[title]" required>
+            </div>
+            <div>Pilih lokasi tempat</div>
+
+            <div class="mb-3">
+                <label class="form-label" for="location">Location</label>
+                <input value="<%= place.location %>" class="form-control" type="text" id="location" name="place[location]" required>
+            </div>
+            <div id="map"></div>
+            <pre id="coordinates" class="coordinates"></pre>
+
+            <div clas="mb-3">
+                <label for="typecoord">Tipe Koordinat (Point)</label>
+                
+                <select name="geometry[type]" id="typecoord">
+                    <option value="">--Please choose an option--</option>
+                    <option value='Point'>Point</option>
+                  
+              
+                </select>
+
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="coordinate">Coordinate (long, lat)</label>
+                <input class="form-control" type="text" id="koor1" name="geometry[coordinates]" value="" required>
+                <input class="form-control" type="text" id="koor2" name="geometry[coordinates]" value="" required>
+            </div>
+            
+            <label class="form-label" for="image">klik ctrl+ pilih gambar untuk memilih lebih dari 2 gambar</label>
+            
+
+
+
+            <div class="mb-3">
+                <label class="form-label" for="image">Add Images</label>
+                <input type="file" name="image" id="image" multiple>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="type">type</label>
+                <input value="<%= place.placeType %>" class="form-control" type="text" id="type" name="place[placeType]" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="flora">flora</label>
+                <input value="<%= place.flora %>" class="form-control" type="text" id="flora" name="place[flora]" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="fauna">fauna</label>
+                <input value="<%= place.fauna %>" class="form-control" type="text" id="fauna" name="place[fauna]" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="makanan">makanan</label>
+                <input value="<%= place.makanan %>" class="form-control" type="text" id="makanan" name="place[makanan]" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="habitant">habitant</label>
+                <input  value="<%= place.habitant %>" class="form-control" type="text" id="habitant" name="place[habitant]" required>
+            </div>
+
+            <div clas="mb-3">
+                <label for="sumberAir">Apakah ada sumber air ?</label>
+                
+                <select value="true" name="place[sumberAir]" id="sumberAir">
+                    <option value="">--Please choose an option--</option>
+                    <option value='true'>Ada</option>
+                    <option value='false'>Tidak ada</option>
+              
+                </select>
+
+            </div>
+
+           
+
+            <div class="mb-3">
+                <label  class="form-label" for="description">Description</label>
+                <textarea  class="form-control" type="text" id="description" name="place[description]" required><%= place.description %></textarea>
+            </div>
+            <div class="mb-3">
+                <% place.images.forEach(function(img, i) {  %> 
+                    <div>
+                        <label for="image-<%= i %>">Delete?</label>
+                        <input class="form-check-input" type="checkbox" id="image-<%= i %>" name="deleteImages[]" value="<%= img.filename %>">
+                        <img src="<%= img.thumbnail %>" class="img-thumbnail" alt="">
+                    </div>
+                <% }) %> 
+            </div>
+            
+
+
+            <h4>Tambah Tiket</h4>
+            
+            <br> </br>
+                <div clas="mb-3">
+                    <label for="sumberAir">  Tipe Tiket </label>
+                    
+                    <select name="tickets[0][type]" id="sumberAir">
+                        <option value="">--Please choose an option--</option>
+                        <option value='digital'>Digital</option>
+                        <option value='fisik'>Fisik</option>
+                
+                    </select>
+
+                </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="price">price</label>
+                <input class="form-control" type="number" id="price" name="tickets[0][price]" value="<%= place.tickets[0].price %>" required>
+            </div>
+        
+
+            <div class="mb-3">
+                <label class="form-label" for="stock">stock</label>
+                <input class="form-control" type="number" id="stock" name="tickets[0][stock]" value="<%= place.tickets[0].stock %>" required>
+            </div>
+
+            <!-- placeholder="dd-mm-yyyy" value=""
+            min="1997-01-01" max="2120-12-31" -->
+            <div class="mb-3">
+                <label class="form-label" for="expired">expired</label>
+                <input class="form-control" type="date" id="expired"  name="tickets[0][expired]" value="<%= place.tickets[0].expired.toISOString().split('T')[0] %>"  value=""
+                min="1997-01-01" max="2120-12-31"  required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="startDate">tanggal check in</label>
+                <input class="form-control" type="date" id="startDate" name="tickets[0][startDate]" value="<%= place.tickets[0].startDate.toISOString().split('T')[0] %>" required>
+            </div>
+
+
+            <div class="mb-3">
+                <label class="form-label" for="endDate">tanggal check out</label>
+                <input class="form-control" type="date" id="endDate" name="tickets[0][endDate]" value="<%= place.tickets[0].endDate.toISOString().split('T')[0] %>"  required>
+            </div>
+            <div class="mb-3">
+                <button class="btn btn-danger">Save changes</button>
+            </div>
+            
+        </form>
+        <!-- <a href="/places">All places</a> -->
+        <a href="/places/<%= place._id %> ">Back to places</a>
+
+    </div>
+</div>
+<script>
+    const mapToken = '<%- process.env.MAPBOX_TOKEN %>';
+    const place = <%- JSON.stringify(place) %>
+
+</script>
+
+<script  src="/js/editPlaceMap.js"></script>

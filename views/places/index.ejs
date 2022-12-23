@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="/stylesheets/materialize/css/materialize.css"  media="screen,projection"/>
+    <link rel="stylesheet" href="/stylesheets/style.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"  >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <link rel="stylesheet" href="/stylesheets/app.css">
+    
+    <!-- Geocoder plugin -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css"
+      type="text/css"
+    />
+    <!-- Turf.js plugin -->
+    <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
+
+    <!-- polyline -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-polyline/1.1.1/polyline.js"></script>
+
+    <!-- mapbox direction -->
+    <script src=https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.js></script>
+<link rel="stylesheet" href=https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.css type="text/css" />
+    <!-- <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+        </style> -->
+    <style>
+        .listings {
+        height: 100%;
+        overflow: auto;
+        padding-bottom: 60px;
+      }
+
+      .listings .item {
+        border-bottom: 1px solid #eee;
+        padding: 10px;
+        text-decoration: none;
+      }
+
+      .listings .item:last-child {
+        border-bottom: none;
+      }
+      .listings .item .title {
+        display: block;
+        color: #00853e;
+        font-weight: 700;
+      }
+
+      .listings .item .title small {
+        font-weight: 400;
+      }
+      .listings .item.active .title,
+      .listings .item .title:hover {
+        color: #8cc63f;
+      }
+      .listings .item.active {
+        background-color: #f8f8f8;
+      }
+
+      /* .sidebar {
+       
+        width: 15%; 
+        
+        float: left;
+       
+        left: 0;
+        overflow: hidden; 
+        border-right: 1px solid rgba(0, 0, 0, 0.25);
+      } */
+
+      .sidebar {
+        
+        border-right: 1px solid rgba(0, 0, 0, 0.25);
+        left: 0;
+        padding:  0 0; /* Height of navbar */
+        box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+        width: 240px;
+        
+        }
+
+      .map {
+        position: relative;
+        left: 33.3333%;
+        width: 66.6666%;
+        top: 0;
+        bottom: 0;
+      }
+
+      /* .cluster-map {
+        margin-left: 15%; Same as the width of the sidebar
+        padding: 0px;
+       width: 60%;
+
+         
+      } */
+
+      .clustermap{
+        /* width: 240px; */
+        /* z-index: 600; */
+        margin-left: 240px;
+        top: 0;      }
+
+
+        .coordinates {
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  
+  padding: 5px 10px;
+  margin: 0;
+  font-size: 11px;
+  line-height: 18px;
+  border-radius: 3px;
+  display: none;
+  }
+    </style>
+    <!--Let browser know website is optimized for mobile-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  </head>
+
+  <body>
+    <header>
+      <div data-aos="fade-right">
+        <div class="text1">
+          Get ready 
+        </div>
+        <div class="text2">
+          to explore a new planet!
+        </div>        
+      </div>
+      <div>
+        <img class="animate__animated animate__bounceIn animate__slower img-fluid" src="https://res.cloudinary.com/tutorial-lntng/image/upload/v1668219816/MapI/O/Roket_crp_bbe4hj.png" alt="roket">
+      </div>
+    </header>
+
+    <nav class="sticky">
+      <div class="nav-wrapper">
+        <a href="#" class="brand-logo"><img src="https://res.cloudinary.com/tutorial-lntng/image/upload/v1668219816/MapI/O/Logo_Beta_x27m0h.svg" alt="logo beta"></a>
+        <ul id="nav-mobile" class="right hide-on-med-and-down">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="/">home</a>
+          </li>
+        
+          <li class="nav-item">
+            <a class="nav-link active"  href="/places">places</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/places/new">new place</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/login">login</a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="/about">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/addPayment">Add Payment</a>
+          </li>
+          <li class="nav-item">
+          
+                  
+            <a href="/logout" class="btn-green btn-sm btn" type="submit">Logout</a href="/renderLogout">
+     
+        </li>
+    
+        </ul>
+      </div>
+    </nav>
+    
+   
+    <main class ="animate__delay-5s" data-aos="fade-right">
+      <div class="title">
+          Kita mau ngapain sih?
+      </div>
+
+      <div class="about">
+          <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+            sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad 
+            minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea 
+            commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit 
+            esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat
+             non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."</p>
+        </div>
+      </div>
+    </main>
+
+ 
+ 
+        Our Map
+        <div>
+
+          <div class="row d-flex justify-content-between" id="weather-row">cuaca</div>
+      </div>
+      <div class="">
+          <div class="sidebar collapse d-lg-block sidebar collapse bg-white">
+              <div class="position-sticky">
+                  
+                  <div id="listings" class="listings"></div>
+              </div>
+          </div>
+          <div class="clustermap">
+              <div id="cluster-map" class="cluster-map "></div>
+          </div>
+      </div>
+      <div id="holder">
+      </div>
+      <a id="wxButton" href='#' class='button icon cloud' onclick="getCoords()"></a>
+      
+      
+      
+    
+      
+      <h1> Daftar tempat </h1>
+      
+          <% for(let place of places) { %>
+              <div class="d-flex flex-row">
+                  <div class="mb-3">
+                      <div class="row">
+                          <div class="col-md-4">
+                              <% if(place.images.length) { %>
+                                  <img src="<%= place.images[0].url %>" alt="" class="img-fluid">
+                              <% } else { %>
+                                  <img src="https://images.unsplash.com/photo-1667573144362-c81933bcb6de?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw4fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=500&q=60" alt="" class="img-fluid">
+                              <% } %>
+      
+                          </div>
+                          <div class="col-md-7">
+                              <div class="card-body">
+                                  <h5 class="card-title"><%= place.title %></h5>
+                                  <p class="card-text"><%= place.description %></p>
+                                  <p class="card-text">
+                                      <small class="text-muted"><%= place.location %></small>
+                                  </p>
+                                  <a class="btn btn-warning" href="/places/<%= place._id %>"> lihat <%= place.title %></a>
+      
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <% } %>
+     
+<!--   
+      <div class="mapouter">
+        <div class="gmap_canvas">
+          <iframe class="gmap_iframe" width="100%" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" src="https://maps.google.com/maps?width=800&amp;height=500&amp;hl=en&amp;q=UGM&amp;t=&amp;z=10&amp;ie=UTF8&amp;iwloc=B&amp;output=embed">
+          </iframe>
+          <a href="https://temp-mailbox.com">temp mail</a>
+        </div>
+        <style>.mapouter{position:relative;text-align:right;width:100%;}.gmap_canvas {overflow:hidden;background:none!important;width:100%;height:1000px;}.gmap_iframe {height:500px!important;}
+        </style>
+      </div>
+    </div> -->
+    
+    
+    <footer class="page-footer futer">
+      <div class="container">
+        <div class="row">
+          <div class="col l6 s12">
+            <img src="https://res.cloudinary.com/tutorial-lntng/image/upload/v1668219816/MapI/O/Logo_Beta_x27m0h.svg" alt="">
+          </div>
+          <div class="col l4 offset-l2 s12">
+            <h5 class="white-text">Beta Crew</h5>
+            <ul>
+              <li>Dewangga Haryono Putra</li>
+              <li>Irfan Fadilah Rafif</li>
+              <li>Zalfaa Aulia</li>
+              <li>Lintang Birda Saputra</li>
+              <li>Ahmad Siddiq Priaji</li>
+              <li>Muhammad Hariish Hafiiz</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="footer-copyright">
+        <div class="container">
+        © 2022 Copyright
+        </div>
+      </div>
+    </footer>
+
+    <!--JavaScript at end of body for optimized loading-->
+    <script type="text/javascript" src="/materialize/js/materialize.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+      AOS.init();
+    </script>
+    <script>
+      const mapToken = '<%- process.env.MAPBOX_TOKEN %>';
+      const places = {features: <%- JSON.stringify(places) %>}
+  </script>
+
+  <script src="/js/clusterMap.js"></script>
+  <script>
+
+      localStorage.setItem("success", "true");
+      localStorage.setItem("token", `${token}`);
+      localStorage.setItem("status", "You are successfully logged in!");
+      </script>
+
+
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script type="application/json" crossorigin="anonymous" src="/js/validateForms.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> -->
+    <!-- <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+    </script> -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8= sha256-T+aPohYXbm0fRYDpJLr+zJ9RmYTswGsahAoIsNiMld4=" crossorigin="anonymous"></script>
+  </body>
+</html>

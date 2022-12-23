@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+    <title>Beta Map</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+    <!-- <script  src='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.js'></script>
+    <link  href='https://api.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css' rel='stylesheet' />
+ -->
+
+ <link href="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.css" rel="stylesheet">
+<script src="https://api.mapbox.com/mapbox-gl-js/v2.10.0/mapbox-gl.js"></script>
+    <link rel="stylesheet" href="/stylesheets/app.css">
+    
+    <!-- Geocoder plugin -->
+    <script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.7.0/mapbox-gl-geocoder.css"
+      type="text/css"
+    />
+    <!-- Turf.js plugin -->
+    <script src="https://npmcdn.com/@turf/turf/turf.min.js"></script>
+
+   
+
+    <!-- polyline -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mapbox-polyline/1.1.1/polyline.js"></script>
+
+    <!-- mapbox direction -->
+    <script src=https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.js></script>
+<link rel="stylesheet" href=https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-directions/v4.0.2/mapbox-gl-directions.css type="text/css" />
+
+<link rel="stylesheet" href="/stylesheets/booking.css" >
+    <!-- <style>
+        body { margin: 0; padding: 0; }
+        #map { position: absolute; top: 0; bottom: 0; width: 100%; }
+        </style> -->
+    <style>
+        .listings {
+        height: 100%;
+        overflow: auto;
+        padding-bottom: 60px;
+      }
+
+      .listings .item {
+        border-bottom: 1px solid #eee;
+        padding: 10px;
+        text-decoration: none;
+      }
+
+      .listings .item:last-child {
+        border-bottom: none;
+      }
+      .listings .item .title {
+        display: block;
+        color: #00853e;
+        font-weight: 700;
+      }
+
+      .listings .item .title small {
+        font-weight: 400;
+      }
+      .listings .item.active .title,
+      .listings .item .title:hover {
+        color: #8cc63f;
+      }
+      .listings .item.active {
+        background-color: #f8f8f8;
+      }
+
+      /* .sidebar {
+       
+        width: 15%; 
+        
+        float: left;
+       
+        left: 0;
+        overflow: hidden; 
+        border-right: 1px solid rgba(0, 0, 0, 0.25);
+      } */
+
+      .sidebar {
+        
+        border-right: 1px solid rgba(0, 0, 0, 0.25);
+        left: 0;
+        padding:  0 0; /* Height of navbar */
+        box-shadow: 0 2px 5px 0 rgb(0 0 0 / 5%), 0 2px 10px 0 rgb(0 0 0 / 5%);
+        width: 240px;
+        
+        }
+
+      .map {
+        position: relative;
+        left: 33.3333%;
+        width: 66.6666%;
+        top: 0;
+        bottom: 0;
+      }
+
+      /* .cluster-map {
+        margin-left: 15%; Same as the width of the sidebar
+        padding: 0px;
+       width: 60%;
+
+         
+      } */
+
+      .clustermap{
+        /* width: 240px; */
+        /* z-index: 600; */
+        margin-left: 240px;
+        top: 0;      }
+
+
+        .coordinates {
+  background: rgba(0, 0, 0, 0.5);
+  color: #fff;
+  
+  padding: 5px 10px;
+  margin: 0;
+  font-size: 11px;
+  line-height: 18px;
+  border-radius: 3px;
+  display: none;
+  }
+    </style>
+
+
+
+  
+ 
+
+</head>
+<body class="d-flex flex-column vh-100">
+  
+     <!-- include('../partials/navbar') -->
+    <main class="container mt-5">
+      <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="#">Navbar</a>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="/">home</a>
+              </li>
+            
+              <li class="nav-item">
+                <a class="nav-link active"  href="/places">places</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/places/new">new place</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/login">login</a>
+              </li>
+              
+              <li class="nav-item">
+                <a class="nav-link" href="/about">About</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/addPayment">Add Payment</a>
+              </li>
+              <li class="nav-item">
+          
+                  
+                  <a href="/logout" class="btn-green btn-sm btn" type="submit">Logout</a href="/renderLogout">
+           
+              </li>
+        
+            </ul>
+          </div>
+        </div>
+      </nav>
+        <!-- include('../partials/flash') -->
+        <%- include('../partials/flash') %> 
+        <%- body %>
+    </main>
+    <!-- include('../partials/footer') -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script type="application/json" crossorigin="anonymous" src="/js/validateForms.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> -->
+    <!-- <script src=
+"https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js">
+    </script> -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8= sha256-T+aPohYXbm0fRYDpJLr+zJ9RmYTswGsahAoIsNiMld4=" crossorigin="anonymous"></script>
+</body>
+</html>
+

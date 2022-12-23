@@ -1,0 +1,153 @@
+<% layout('layouts/boilerplate') %>
+
+
+
+
+<div class="row">
+    <div class="col-6">
+      
+      <div id="map"></div>
+      
+      <!-- carousel -->
+
+      <div id="carouselExampleFade" class="carousel slide carousel-fade carousel-dark" data-bs-ride="carousel">
+        <div class="carousel-inner">
+
+        <% place.images.forEach((img, i) => { %> 
+          <div class="carousel-item <%= i === 0 ? 'active' : '' %>">
+            <img src="<%= img.url %>" class="d-block w-100" alt="">
+          </div>
+        <% }) %> 
+        </div>
+        
+        <% if(place.images.length > 1){ %> 
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade"  data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade"  data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        <% } %> 
+       
+      </div>
+      
+
+
+       
+    
+      
+    </div>
+
+
+    <div class="col-6">
+      <!-- deskripsi tempat -->
+    <div class="card-body">
+      <h5 class="card-title"><%= place.title %></h5>
+      <p class="card-text"><%= place.description %></p>
+    </div>
+
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item text-muted"><%= place.location %></li>
+      <li class="list-group-item text">Submitted by <%= place.author.firstname %></li>
+      <li class="list-group-item text">flora dan fauna: <%= place.flora %>, <%= place.fauna %> </li>
+      <li class="list-group-item-text">makanan: <%= place.makanan %> </li>
+      <li class="list-group-item-text"> <% if (place.sumberAir) { %>
+          <p>ada sumber air</p>
+      <% } else { %>
+          <p>tidak ada sumber air</p>
+
+      <% } %>
+      
+      </li>
+      <li class="list-group-item-text">habitant: <%= place.habitant %> </li>
+    </ul>
+    
+
+    <% if(user && place.author.equals(user.id)) { %> 
+      <div class="card-body">
+        <a href="/places/<%= place._id %>/edit" class="card-link btn btn-warning">Edit</a>
+        <form class="d-inline" action="/places/<%= place._id %>?_method=DELETE" method="POST">
+          <button class="btn btn-danger">Delete</button>
+        </form>            
+      </div>
+    <% } %> 
+  </div>
+
+  </div>
+
+  <div class="d-flex flex-row card-event bg-primary p-24 border-1 ">
+
+    <h6>Get Ticket</h6>
+
+    <%  place.tickets.map((ticket) => {%>
+    <span></span>
+
+      <% if(ticket.statusTicketCategories) {  %>
+
+        <div class="price my-3">
+          <%= ticket.price === 0 ? "free": `$${ticket.price}` %>
+          <span>/person</span>
+        </div>
+        <div class='d-flex gap-3 align-items-center card-details'>
+          <img src='' alt='semina' />
+          <%= place.title %>
+        </div>
+        <div class='d-flex gap-3 align-items-center card-details'>
+          <img src='' alt='semina' />
+            <%= ticket.startDate %> - <%= ticket.startDate %>
+        </div>
+        
+
+        <% if(ticket.stock !== 0) { %>
+        <a class="btn btn-green" href="/places/<%= place._id %>/<%= ticket._id %>/checkout"> Join Now </a>
+          
+            
+
+        
+        <% }; %>
+        <span></span>
+
+
+
+    <% }; %>
+    <span></span>
+    <% });  %>
+  </div>
+
+  <div class="col-12">
+    <div class=" mt-5" >Current Location: <span id="current-city"></span></div>
+    <div class="row d-flex justify-content-between" id="weather-row">cuaca</div>
+  </div>  
+
+</div>
+
+<script>
+    const mapToken = '<%- process.env.MAPBOX_TOKEN %>'
+    const place = <%- JSON.stringify(place) %>
+    const user = <%- JSON.stringify(user) %>
+ 
+</script>
+
+<script>
+  function formatDate(date) {
+  const d = new Date(date);
+  const dtf = new Intl.DateTimeFormat('en', {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+  });
+  const [{ value: mo }, , { value: da }, , { value: ye }] =
+    dtf.formatToParts(d);
+
+  return `${da} ${mo} ${ye}`;
+}
+
+
+  
+  
+  </script>
+
+
+<script  src="/js/showPageMap.js"></script>
